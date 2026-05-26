@@ -4,6 +4,8 @@ import StatsStrip from './components/StatsStrip';
 import TicketForm from './components/TicketForm';
 import { Plus, Filter, RefreshCw, AlertCircle, CheckCircle, ShieldAlert, Layers } from 'lucide-react';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export default function App() {
   const [tickets, setTickets] = useState([]);
   const [stats, setStats] = useState({
@@ -42,7 +44,7 @@ export default function App() {
         params.append('breached', 'true');
       }
 
-      const response = await fetch(`/api/tickets?${params.toString()}`);
+      const response = await fetch(`${API_BASE}/api/tickets?${params.toString()}`);
       if (!response.ok) {
         throw new Error('Failed to fetch tickets');
       }
@@ -60,7 +62,7 @@ export default function App() {
   // Fetch Stats
   const fetchStats = useCallback(async () => {
     try {
-      const response = await fetch('/api/tickets/stats');
+      const response = await fetch(`${API_BASE}/api/tickets/stats`);
       if (!response.ok) {
         throw new Error('Failed to fetch statistics');
       }
@@ -100,7 +102,7 @@ export default function App() {
   // Move / Transition ticket status
   const handleMoveTicket = async (ticketId, targetStatus) => {
     try {
-      const response = await fetch(`/api/tickets/${ticketId}`, {
+      const response = await fetch(`${API_BASE}/api/tickets/${ticketId}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
@@ -133,7 +135,7 @@ export default function App() {
     if (!window.confirm('Are you sure you want to delete this ticket?')) return;
 
     try {
-      const response = await fetch(`/api/tickets/${ticketId}`, {
+      const response = await fetch(`${API_BASE}/api/tickets/${ticketId}`, {
         method: 'DELETE'
       });
 

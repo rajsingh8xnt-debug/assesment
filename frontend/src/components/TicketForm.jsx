@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { X, Send, AlertTriangle } from 'lucide-react';
 
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
 export default function TicketForm({ isOpen, onClose, onTicketCreated }) {
   const [formData, setFormData] = useState({
     subject: '',
@@ -50,7 +52,7 @@ export default function TicketForm({ isOpen, onClose, onTicketCreated }) {
     setServerError('');
 
     try {
-      const response = await fetch('/api/tickets', {
+      const response = await fetch(`${API_BASE}/api/tickets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
